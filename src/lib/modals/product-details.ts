@@ -10,6 +10,6 @@ const Product = new Schema({
     price : String,
 })
 
-const product = models.product || model('products', Product);
+const product = models.products || model('products', Product);
 
 export default product;

@@ -8,7 +8,7 @@ const page = () => {
             <Navbar />
             <div className='pl-[200px] p-4'>
                 <div>
-                    
+                    Dashboard
                 </div>
             </div>
         </>

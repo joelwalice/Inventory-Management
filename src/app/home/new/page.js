@@ -1,6 +1,7 @@
 "use client"
 import React, { useEffect, useState } from "react";
-import Navbar from '@/components/Navbar'
+import Navbar from '../../../components/Navbar'
+import { BASE_URL } from "../../../../utils/constants";
 
 
 const NewProduct = () => {
@@ -8,91 +9,89 @@ const NewProduct = () => {
   const [price, setPrice] = useState("");
   const [image, setImage] = useState("");
   const [category, setCategory] = useState("");
+  const [sku, setSku] = useState("");
+  const [incoming, setIncoming] = useState("");
+  const [stock, setStock] = useState("");
 
-
-  const createP = (e) => {
+  const createP = async (e) => {
     e.preventDefault();
-    setImage(e);
-    if (name === "" || price === "") {
-      setErrors("Please fill all the fields");
-      return;
+    try {
+      const response = await fetch(`${BASE_URL}/api/inventory`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          image,
+          name,
+          category,
+          sku,
+          incoming,
+          stock,
+          price,
+        }),
+      });
+  
+      const data = await response.json();
+  
+      if (response.status === 201) {
+        console.log("Done");
+        window.location.href = "/home/inventory";
+      } else {
+        console.error("Error adding product:", data.message);
+      }
+    } catch (err) {
+      console.error("Error adding product:", err);
     }
-    // axios
-    //   .post("/product/new", {
-    //     name,
-    //     category,
-    //     price,
-    //     image,
-    //   })
-    //   .then((res) => {
-    //     console.log(res.status);
-    //     if (res.status === 201) {
-    //       window.location.href = "/home/inventory";
-    //     }
-    //   })
-    //   .catch((err) => {
-    //     console.error("Error adding product:", err);
-    //   });
   };
+  
 
   return (
     <div>
         <Navbar />
       <div className='pl-[200px] p-4'>
-        <form className="flex flex-col p-4 gap-4">
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-semibold text-center">
+        <form className="flex flex-col p-4 gap-4 text-gray-500">
+          <h1 className="text-4xl font-semibold text-center text-black">
             New Product
           </h1>
-          <label className="text-xl">Seller Email</label>
-          <input
-            type="text"
-            placeholder="Product Name"
-            required
-            readOnly
-            className=" flex flex-col justify-center items-center p-4 border border-black rounded-md"
-          />
-          <label className="text-xl">Product Name</label>
+          <label className="text-xl font-semibold text-black">Product Name</label>
           <input
             type="text"
             placeholder="Product Name"
             required
             value={name}
             onChange={(ev) => setName(ev.target.value)}
-            className=" flex flex-col justify-center items-center p-4 border border-black rounded-md"
+            className=" flex flex-col justify-center items-center p-2 border border-black rounded-md"
           />
-          <label className="text-xl">Colour of the Product</label>
-          <input
-            type="text"
-            placeholder="Product Name"
-            required
-            className=" flex flex-col justify-center items-center p-4 border border-black rounded-md"
-          />
-          <label className="text-xl">Category of the Product</label>
-          <div className="p-2 rounded-lg flex items-center gap-4">
+          <label className="text-xl font-semibold text-black">Product Category</label>
+          <div className="rounded-lg flex items-center gap-4">
             <label className="">
               <input
                 type="radio"
                 name="category"
-                value="Smartphone"
-                checked={category === "Smartphone"}
+                style={{accentColor : "green"}}
+                value="Finished Goods"
+                checked={category === "Finished Goods"}
                 onChange={(ev) => setCategory(ev.target.value)}
               />
-              {" "}Smartphone
+              {" "}Finished Goods
+            </label>
+            <label className="">
+              <input
+                type="radio"
+                style={{accentColor : "green"}}
+                name="category"
+                value="Raw Material"
+                checked={category === "Raw Material"}
+                onChange={(ev) => setCategory(ev.target.value)}
+              />
+              {" "}Raw Material
             </label>
             <label className="">
               <input
                 type="radio"
                 name="category"
-                value="Laptop"
-                checked={category === "Laptop"}
-                onChange={(ev) => setCategory(ev.target.value)}
-              />
-              {" "}Laptop
-            </label>
-            <label className="">
-              <input
-                type="radio"
-                name="category"
+                style={{accentColor : "green"}}
                 value="Groceries"
                 checked={category === "Groceries"}
                 onChange={(ev) => setCategory(ev.target.value)}
@@ -102,6 +101,7 @@ const NewProduct = () => {
             <label className="">
               <input
                 type="radio"
+                style={{accentColor : "green"}}
                 name="category"
                 value="Clothings"
                 checked={category === "Clothings"}
@@ -110,13 +110,34 @@ const NewProduct = () => {
               {" "}Clothings
             </label>
           </div>
-
-          <label className="text-xl">Description of the Product</label>
-          <textarea
-            placeholder="Description"
-            className="flex flex-col justify-center items-center p-4 border border-black rounded-md"
+          <label className="text-xl font-semibold text-black">Product SKU</label>
+          <input
+            type="text"
+            placeholder="Product SKU"
+            required
+            value={sku}
+            onChange={(ev) => setSku(ev.target.value)}
+            className=" flex flex-col justify-center items-center p-2 border border-black rounded-md"
           />
-          <label className="text-xl">Image of the Product</label>
+          <label className="text-xl font-semibold text-black">Product Incoming</label>
+          <input
+            type="text"
+            placeholder="Product Incoming"
+            required
+            value={incoming}
+            onChange={(ev) => setIncoming(ev.target.value)}
+            className=" flex flex-col justify-center items-center p-2 border border-black rounded-md"
+          />
+          <label className="text-xl font-semibold text-black">Product Stock</label>
+          <input
+            type="text"
+            placeholder="Stock"
+            required
+            value={stock}
+            onChange={(ev) => setStock(ev.target.value)}
+            className=" flex flex-col justify-center items-center p-4 border border-black rounded-md"
+          />
+          <label className="text-xl font-semibold text-black">Product Image</label>
           <div className="flex flex-col justify-center ">
             <div className="rounded-xl">
               {image === "" || image == null ? (
@@ -132,7 +153,7 @@ const NewProduct = () => {
             </div>
             <input accept="image/*" type="file" />
           </div>
-          <label className="text-xl">Price (in INR)</label>
+          <label className="text-xl font-semibold text-black">Product Price</label>
           <input
             type="text"
             placeholder="Price"
@@ -144,7 +165,7 @@ const NewProduct = () => {
           <div>
             <button
               onClick={createP}
-              className="rounded-xl p-4 bg-red-700 border-red-700 text-white font-semibold"
+              className="rounded-xl p-4 bg-green-700 border-green-700 text-white font-semibold"
             >
               Submit
             </button>
