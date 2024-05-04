@@ -1,7 +1,7 @@
 import jwt from "jsonwebtoken"
 import bcrypt from "bcrypt"
-import connect from "@/lib/db";
-import Admin from "@/lib/modals/admin-data"
+import connect from "../../../../../lib/db";
+import Admin from "../../../../../lib/modals/product-details"
 
 const JWT_SECRET = "jwtsupersecret";
 

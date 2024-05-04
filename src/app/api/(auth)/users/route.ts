@@ -1,6 +1,6 @@
 import bcrypt from "bcrypt"
-import connect from "@/lib/db";
-import Admin from "@/lib/modals/admin-data"
+import connect from "../../../../lib/db";
+import Admin from "../../../../lib/modals/product-details"
 
 
 export const GET = async (request: Request) => {

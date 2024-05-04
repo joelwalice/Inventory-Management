@@ -1,6 +1,6 @@
 import React from 'react'
 import Link from 'next/link'
-import Navbar from '@/components/Navbar'
+import Navbar from '../../../components/Navbar'
 
 const page = () => {
     return (
