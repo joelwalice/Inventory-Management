@@ -2,6 +2,7 @@ import connect from "../../../../lib/db";
 import product from "../../../../lib/modals/product-details";
 
 export const POST = async (req: Request) => {
+
   try {
     const body = await req.json();
     await connect();
