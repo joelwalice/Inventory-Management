@@ -23,11 +23,7 @@ const page = () => {
             try {
                 const response = await fetch(`${BASE_URL}/api/inventory`)
                 const data = await response.json();
-                if (Array.isArray(data.data)) {
-                    setProducts(data.data);setNo(data.data.length);
-                  } else {
-                    console.log("Products data is not in the expected format (array).");
-                  }
+                setProducts(data.data.data);setNo(data.data.data.length);
                 
             } catch (error) {
                 console.error('Error fetching data:', error);
