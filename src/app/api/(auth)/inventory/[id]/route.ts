@@ -3,7 +3,6 @@ import products from "../../../../../lib/modals/product-details";
 
 export const PUT = async (req: Request) => {
     const body = await req.json();
-    console.log(body);
     const id = req.url.split("inventory/")[1];
     try {
         const data = await products.findByIdAndUpdate(id, {

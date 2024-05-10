@@ -160,7 +160,7 @@ const page = () => {
                                             </svg>
                                         </Link>
                                         <Link
-                                            href={`/home/delete/${product._id}`}
+                                            href={`/home/inventory/delete/${product._id}`}
                                             type="button"
                                             className="p-1 bg-red-700 text-white rounded-md border-red-700 text-sm flex items-center gap-2"
                                         >
