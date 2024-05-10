@@ -1,6 +1,6 @@
 import bcrypt from "bcrypt"
 import connect from "../../../../lib/db";
-import Admin from "../../../../lib/modals/product-details"
+import Admin from "../../../../lib/modals/user-details"
 
 
 export const GET = async (request: Request) => {
@@ -23,9 +23,7 @@ export const POST = async (request: Request) => {
     const newAdmin = new Admin({
             name: body.name,
             email: body.email,
-            password: hashedPassword, // Use the hashed password here
-            role: body.role,
-            new: body.new
+            password: hashedPassword,
         });
       await connect();
       await newAdmin.save();

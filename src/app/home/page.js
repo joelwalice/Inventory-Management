@@ -1,8 +1,14 @@
-import React from 'react'
-import Link from 'next/link'
+"use client"
+import React, { useEffect } from 'react'
 import Navbar from '../../components/Navbar'
+import Cookies from 'js-cookie'
 
 const page = () => {
+    useEffect(() => {
+        if(!Cookies.get('isloggedIn')){
+            window.location.href = "/login";
+        }
+    },[])
     return (
         <>
             <Navbar />

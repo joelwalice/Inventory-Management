@@ -1,9 +1,40 @@
-import React from 'react'
+"use client"
+import React, { useEffect, useState } from 'react'
 import Link from 'next/link'
+import Cookies from 'js-cookie';
 
 const page = () => {
+    useEffect(() => {
+        if(!Cookies.get('isloggedIn')) {
+            window.location.href = "/login";
+        }
+    }, [])
+    const [nav, setNav] = useState(false);
+    const signOut = () => {
+        Cookies.remove('isloggedIn');
+        Cookies.remove('token');
+        window.location.href = '/login';
+    };
     return (
         <>
+            {nav ? <div className='relative z-40'>
+                <div className='flex absolute right-0 top-[70px] duration-500 bg-gray-100 shadow-lg text-gray-500 min-h-[200px] rounded-l-lg w-[148px] items-center justify-center'>
+                    <div className='flex flex-col items-center justify-center  p-4 gap-4'>
+                        <button onClick={signOut} className='bg-green-700 text-white rounded-md p-2'>
+                            <h1 className='font-semibold'>Signout</h1>
+                        </button>
+                    </div>
+                </div>
+
+            </div> : <div className='relative'>
+                <div className='flex fixed right-[-500px] top-[70px] duration-500 bg-gray-100 shadow-lg text-gray-500 min-h-[200px] rounded-lg w-[150px] items-center justify-center'>
+                    <div className='flex flex-col items-center justify-center p-4 gap-4'>
+                        <button onClick={signOut} className='bg-green-700 text-white rounded-md p-2'>
+                            <h1 className='font-semibold'>Signout</h1>
+                        </button>
+                    </div>
+                </div>
+            </div>}
             <nav className='w-screen flex items-center justify-end p-4 border text-gray-500 gap-2'>
                 <button className='border-0'>
                     <div>
@@ -21,7 +52,7 @@ const page = () => {
                     </div>
                 </button>
                 <p className='text-gray-300'> | </p>
-                <button className='border-0'>
+                <button className='border-0' onClick={() => setNav(!nav)}>
                     <div>
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-7 h-7">
                             <path fill-rule="evenodd" d="M18 10a8 8 0 1 1-16 0 8 8 0 0 1 16 0Zm-5.5-2.5a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0ZM10 12a5.99 5.99 0 0 0-4.793 2.39A6.483 6.483 0 0 0 10 16.5a6.483 6.483 0 0 0 4.793-2.11A5.99 5.99 0 0 0 10 12Z" clip-rule="evenodd" />

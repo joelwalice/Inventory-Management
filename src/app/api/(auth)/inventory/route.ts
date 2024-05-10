@@ -1,5 +1,6 @@
 import connect from "../../../../lib/db";
 import product from "../../../../lib/modals/product-details";
+import { redis } from "../../../../lib/redis";
 
 export const POST = async (req: Request) => {
 
@@ -19,7 +20,14 @@ export const POST = async (req: Request) => {
 export const GET = async () => {
   try {
     await connect();
+    const cached = await redis.get('products');
+    if(cached){
+      const parsedData = JSON.parse(cached);
+      return new Response(JSON.stringify({ data: parsedData }), { status: 200 });
+    }
     const products = await product.find();
+    if(!products) return new Response('Error');
+    await redis.set('products', JSON.stringify({data : products}));
     if (products.length > 0) {
       return new Response(JSON.stringify({ data: products }), { status: 200 });
     } else {
