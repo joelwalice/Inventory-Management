@@ -23,7 +23,7 @@ const page = () => {
             try {
                 const response = await fetch(`${BASE_URL}/api/inventory`)
                 const data = await response.json();
-                setProducts(data.data.data);setNo(data.data.data.length);
+                    setProducts(data.data);setNo(data.data.length);
                 
             } catch (error) {
                 console.error('Error fetching data:', error);
@@ -31,7 +31,7 @@ const page = () => {
         };
 
         fetchData();
-    }, []);
+    },[]);
 
     return (
         <>

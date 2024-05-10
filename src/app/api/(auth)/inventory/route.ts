@@ -1,33 +1,25 @@
 import connect from "../../../../lib/db";
 import product from "../../../../lib/modals/product-details";
-import { redis } from "../../../../lib/redis";
 
 export const POST = async (req: Request) => {
-
   try {
     const body = await req.json();
     await connect();
-    const star = new product(body);
-    await star.save();
-    return new Response(
-      JSON.stringify({ message: "Data is created", data: star }), { status: 201 });
-  }
-  catch (error) {
-    return new Response(JSON.stringify({ message: "Error in creating user", error, }), { status: 500, });
+    const newProduct = new product(body);
+    await newProduct.save();
+
+    return new Response(JSON.stringify({ message: "Data is created", data: newProduct }), { status: 201 });
+  } catch (error) {
+    return new Response(JSON.stringify({ message: "Error in creating product", error }), { status: 500 });
   }
 }
+
 
 export const GET = async () => {
   try {
     await connect();
-    const cached = await redis.get('products');
-    if(cached){
-      const parsedData = JSON.parse(cached);
-      return new Response(JSON.stringify({ data: parsedData }), { status: 200 });
-    }
     const products = await product.find();
     if(!products) return new Response('Error');
-    await redis.set('products', JSON.stringify({data : products}));
     if (products.length > 0) {
       return new Response(JSON.stringify({ data: products }), { status: 200 });
     } else {
