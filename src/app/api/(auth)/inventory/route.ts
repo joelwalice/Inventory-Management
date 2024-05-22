@@ -14,7 +14,6 @@ export const POST = async (req: Request) => {
   }
 }
 
-
 export const GET = async () => {
   try {
     await connect();

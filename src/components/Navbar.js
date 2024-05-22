@@ -42,9 +42,16 @@ const page = () => {
                 </div>
 
             </div> : <div className='relative'>
-                <div className='flex fixed right-[-500px] top-[70px] duration-500 bg-gray-100 shadow-lg text-gray-500 min-h-[200px] rounded-lg w-[150px] items-center justify-center'>
-                    <div className='flex flex-col items-center justify-center p-4 gap-4'>
-                        <button onClick={signOut} className='bg-green-700 text-white rounded-md p-2'>
+                <div className='flex flex-col fixed right-[-500px] top-[70px] duration-500 bg-gray-100 shadow-lg text-gray-500 min-h-[200px] rounded-lg w-[150px] items-center justify-center'>
+                    <h1 className='font-bold text-green-700 text-xl'>DETAILS</h1>
+                    <div className='flex flex-col justify-center text-black p-4 gap-4'>
+                        <h1 className='flex items-center gap-2 font-semibold'>
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6">
+                                <path fill-rule="evenodd" d="M18.685 19.097A9.723 9.723 0 0 0 21.75 12c0-5.385-4.365-9.75-9.75-9.75S2.25 6.615 2.25 12a9.723 9.723 0 0 0 3.065 7.097A9.716 9.716 0 0 0 12 21.75a9.716 9.716 0 0 0 6.685-2.653Zm-12.54-1.285A7.486 7.486 0 0 1 12 15a7.486 7.486 0 0 1 5.855 2.812A8.224 8.224 0 0 1 12 20.25a8.224 8.224 0 0 1-5.855-2.438ZM15.75 9a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0Z" clip-rule="evenodd" />
+                            </svg>
+                            {name}</h1>
+                        <h1 className='text-[10px] flex items-center font-semibold'>{email}</h1>
+                        <button onClick={signOut} className='bg-green-700 border-0 shadow-lg text-white rounded-md p-2'>
                             <h1 className='font-semibold'>Signout</h1>
                         </button>
                     </div>
