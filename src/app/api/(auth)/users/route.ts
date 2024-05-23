@@ -1,13 +1,19 @@
 import bcrypt from "bcrypt"
-import connect from "../../../../lib/db";
-import Admin from "../../../../lib/modals/user-details"
+import db from "../../../../lib/db";
 
 
 export const GET = async (request: Request) => {
     try{
-        await connect();
-        const users = await Admin.find();
-        console.log(users.length);
+        const users = await new Promise((resolve, reject) => {
+          db.query("SELECT * FROM users",(err : any, results : []) => {
+            if(err){
+              reject(err);
+            }
+            else{
+              resolve(results)
+            }
+          })
+        });
         return new Response(JSON.stringify(users), {status:200});
     }
     catch(err){
@@ -16,75 +22,38 @@ export const GET = async (request: Request) => {
 }
 
 export const POST = async (request: Request) => {
-    try {
-      const body = await request.json();
-      const hashedPassword = await bcrypt.hash(body.password, 10); // 10 is the saltRounds
+  try {
+    const body = await request.json();
+    console.log('Request body:', body);
 
-    const newAdmin = new Admin({
-            name: body.name,
-            email: body.email,
-            password: hashedPassword,
-        });
-      await connect();
-      await newAdmin.save();
-  
-      return new Response(
-        JSON.stringify({ message: "User is created", user: newAdmin }),
-        { status: 201 }
-      );
-    } catch (error) {
-      return new Response(
-        JSON.stringify({
-          message: "Error in creating user",
-          error,
-        }),
-        {
-          status: 500,
+    // Hash the password
+    const hashedPassword = await bcrypt.hash(body.password, 10); // 10 is the saltRounds
+    console.log('Hashed password:', hashedPassword);
+
+    // Insert new user into the database
+    const newAdmin = await new Promise((resolve, reject) => {
+      const query = `INSERT INTO users (fname, lname, email, passwd, phone, profile) VALUES (?, ?, ?, ?, ?, ?)`;
+      const values = [body.fname, body.lname, body.email, hashedPassword, body.phone, ""];
+      
+      db.query(query, values, (err: any, results: any) => {
+        if (err) {
+          console.error('Database query error:', err);
+          reject(err);
+        } else {
+          resolve(results);
         }
-      );
-    }
-  };
+      });
+    });
 
-  export const PATCH = async (request: Request) => {
-    try {
-      const body = await request.json();
-      const { email, New } = body;
-      await connect();
-  
-      const updatedUser = await Admin.findOneAndUpdate(
-        { email: email }, 
-        { $set: { email : email, new: false } }, 
-        { new: true }
+    return new Response(
+      JSON.stringify({ message: "User is created", user: newAdmin }),
+      { status: 201 }
     );
-  
-      if (!updatedUser) {
-        return new Response(
-          JSON.stringify({
-            message: "User not found or didn't update user successfully.",
-          }),
-          {
-            status: 400,
-          }
-        );
-      }
-      return new Response(
-        JSON.stringify({
-          message: "Username updated successfully",
-          user: updatedUser,
-        }),
-        {
-          status: 200,
-        }
-      );
-    } catch (error) {
-      return new Response(
-        JSON.stringify({
-          message: "Error updating username",
-          error,
-        }),
-        {
-          status: 500,
-        }
-      );
-    }
-  };
+  } catch (error) {
+    console.error('Error in creating user:', error);
+    return new Response(
+      JSON.stringify({ message: "Error in creating user", error }),
+      { status: 500 }
+    );
+  }
+};

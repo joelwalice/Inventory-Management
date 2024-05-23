@@ -37,14 +37,11 @@ export default class Login extends Component {
 
             if (data.status === 201) {
                 const datas = await data.json();
-                console.log(datas)
+                alert('Login Successful');
                 Cookies.set('token', datas.data.token);
                 Cookies.set('name', datas.data.name);
                 Cookies.set('email', datas.data.email);
                 Cookies.set('isloggedIn', "true");
-                const loginTime = new Date().toLocaleString();
-                Cookies.set('loginTime', loginTime);
-                alert('Login Successful');
                 window.location.assign(`/home`);
             } else {
                 alert('Check once');

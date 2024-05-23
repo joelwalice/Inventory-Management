@@ -121,7 +121,7 @@ const Page = () => {
                                 </tr>
                             </thead>
                             <tbody className=''>
-                                {products.map((product) => (
+                                {products.length === 0 ? <></> : products.map((product) => (
                                     <tr key={product._id} className="border border-l-0 border-r-0 border-t-0">
                                         <td className="text-sm md:text-md p-3 flex items-center gap-2">
                                             <input

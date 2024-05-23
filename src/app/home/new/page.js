@@ -15,6 +15,7 @@ const NewProduct = () => {
 
   const createP = async (e) => {
     e.preventDefault();
+    console.log(typeof incoming);
     try {
       const response = await fetch(`${BASE_URL}/api/inventory`, {
         method: "POST",

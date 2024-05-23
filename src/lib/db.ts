@@ -1,30 +1,21 @@
-import mongoose from "mongoose";
+import { MYSQL_PASSWORD } from "../../utils/constants";
 
-const MONGODB_URL = process.env.MONGODB_URL;
+const mysql = require("mysql")
 
-const connect = async () => {
-  const connectionState = await mongoose.connection.readyState;
+const db = mysql.createConnection({
+  host: "localhost",
+  user: "root",
+  password: MYSQL_PASSWORD,
+  database: "inventory"
+})
 
-  if (connectionState === 1) {
-    console.log("Already connected");
-    return;
+db.connect((err: any) => {
+  if(err){
+    console.log('Error in connecting : ', err);
   }
-
-  if (connectionState === 2) {
-    console.log("Connecting...");
-    return;
+  else{
+    console.log('Connected to database');
   }
+})
 
-  try {
-    await mongoose.connect(MONGODB_URL!, {
-      dbName: "test",
-      bufferCommands: false,
-    });
-    console.log("Connected");
-  } catch (error) {
-    console.log("Error in connecting to database", error);
-    throw new Error("Error connecting to database");
-  }
-};
-
-export default connect;
+export default db;
