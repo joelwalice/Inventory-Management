@@ -11,7 +11,7 @@ const DeleteProduct = () => {
         const data = await axios.delete(`${BASE_URL}/api/inventory/delete/${id}`)
         if (data.status === 201) {
             console.log(data.status);
-            //window.location.href = '/home/inventory';
+            window.location.href = '/home/inventory';
         }
         else {
             console.log(err);

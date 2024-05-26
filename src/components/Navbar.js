@@ -10,8 +10,8 @@ const page = () => {
         if (!Cookies.get('isloggedIn')) {
             window.location.href = "/login";
         }
-        if (Cookies.get('name')) {
-            setName(Cookies.get('name'));
+        if (Cookies.get('fname') && Cookies.get('lname')) {
+            setName(Cookies.get('fname') + ' ' + Cookies.get('lname'));
         }
         if (Cookies.get('email')) {
             setEmail(Cookies.get('email'));

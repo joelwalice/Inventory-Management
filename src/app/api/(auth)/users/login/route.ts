@@ -31,7 +31,7 @@ export const POST = async (req: Request) => {
         }
 
         const token = jwt.sign({ email: body.email }, JWT_SECRET);
-        return new Response(JSON.stringify({data : {token, name:users.fname + ' ' + users.lname, email: users.email, password: users.passwd} }), { status: 201 });
+        return new Response(JSON.stringify({data : {token, fname:users.fname, lname:users.lname, email: users.email, password: users.passwd} }), { status: 201 });
     } catch (error) {
         console.error("Error:", error);
         return new Response(JSON.stringify({ message: 'Error' }), { status: 500 });

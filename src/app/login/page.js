@@ -39,7 +39,10 @@ export default class Login extends Component {
                 const datas = await data.json();
                 alert('Login Successful');
                 Cookies.set('token', datas.data.token);
-                Cookies.set('name', datas.data.name);
+                Cookies.set('fname', datas.data.fname);
+                Cookies.set('phone', datas.data.phone);
+                Cookies.set('lname', datas.data.lname);
+                Cookies.set('address', datas.data.address);
                 Cookies.set('email', datas.data.email);
                 Cookies.set('isloggedIn', "true");
                 window.location.assign(`/home`);

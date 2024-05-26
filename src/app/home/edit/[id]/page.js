@@ -27,13 +27,14 @@ const EditProduct = () => {
                     const response = await axios.get(`${BASE_URL}/api/inventory/${id}`);
                     if (response.status === 201) {
                         const data = response.data;
-                        setName(data.data.name);
-                        setCategory(data.data.category);
-                        setPrice(data.data.price);
-                        setSku(data.data.sku);
-                        setImage(data.data.image);
-                        setIncoming(data.data.incoming);
-                        setStock(data.data.stock);
+                        const datas = data.data[0]
+                        setName(datas.name);
+                        setCategory(datas.category);
+                        setPrice(datas.price);
+                        setSku(datas.sku);
+                        setImage(datas.image);
+                        setIncoming(datas.incoming);
+                        setStock(datas.stock);
                     } else {
                         console.log("Error fetching data:", response.status);
                     }
@@ -138,7 +139,7 @@ const EditProduct = () => {
                         required
                         value={sku}
                         onChange={(ev) => setSku(ev.target.value)}
-                        className=" flex flex-col justify-center items-center p-2 border border-black rounded-md"
+                        className=" flex flex-col justify-center items-center p-2 border border-black rounded-md" disabled
                     />
                     <label className="text-xl font-semibold text-black">Product Incoming</label>
                     <input

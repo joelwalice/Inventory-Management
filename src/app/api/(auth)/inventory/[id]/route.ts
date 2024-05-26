@@ -1,34 +1,63 @@
-import connect from "../../../../../lib/db";
-import products from "../../../../../lib/modals/product-details";
+import db from "../../../../../lib/db";
 
 export const PUT = async (req: Request) => {
+    const sku = req.url.split("inventory/")[1]; // Assuming sku is passed as a parameter
     const body = await req.json();
-    const id = req.url.split("inventory/")[1];
+
     try {
-        const data = await products.findByIdAndUpdate(id, {
-            name: body.name,
-            category: body.category,
-            sku: body.sku,
-            incoming: body.incoming,
-            stock: body.stock,
-            image: body.image,
-            price: body.price
-        })
-        if(data){
-            return new Response(JSON.stringify({message : "Data Updated"}), {status : 201})
+        const updateProduct = await new Promise((resolve, reject) => {
+            const query = `
+                UPDATE products 
+                SET name = ?, category = ?, incoming = ?, stock = ?, image = ?, price = ?
+                WHERE sku = ?
+            `;
+            const values = [body.name, body.category, body.incoming, body.stock, body.image, body.price, sku];
+
+            db.query(query, values, (err: any, results: any) => {
+                if (err) {
+                    reject(err);
+                } else {
+                    resolve(results);
+                }
+            });
+        });
+
+        if (updateProduct.affectedRows > 0) {
+            return new Response(
+                JSON.stringify({ message: "Data Updated" }),
+                { status: 201 }
+            );
+        } else {
+            return new Response(
+                JSON.stringify({ message: "Product not found" }),
+                { status: 404 }
+            );
         }
+    } catch (err) {
+        return new Response(
+            JSON.stringify({ message: 'Error updating product', data: err }),
+            { status: 500 }
+        );
     }
-    catch (err) {
-        return new Response(JSON.stringify({ message: 'Data not found', data: err }), { status: 404, });
-    }
-}
+};
+
 export const GET = async (req: Request) => {
-    const id = req.url.split("inventory/")[1];
+    const sku = req.url.split("inventory/")[1];
     try {
-        const product = await products.findById(id);
+        const product = await new Promise((resolve, reject) => {
+            const query = `SELECT * FROM products WHERE sku = ?`;
+            db.query(query, [sku], (err: any, results: any) => {
+                if (err) {
+                    reject(err);
+                } else {
+                    resolve(results);
+                }
+            });
+        })
         if (!product) {
             return new Response(JSON.stringify({ message: 'Data not found' }), { status: 404, });
         }
+        console.log(product);
         return new Response(JSON.stringify({ message: 'Data found', data: product }), { status: 201, });
 
     } catch (error) {

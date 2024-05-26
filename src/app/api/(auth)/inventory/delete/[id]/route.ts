@@ -1,10 +1,20 @@
-import products from "../../../../../../lib/modals/product-details";
+import db from "../../../../../../lib/db";
 
 export const DELETE = async (req:Request) => {
-    const id = req.url.split('delete/')[1];
-    console.log(id);
+    const sku = req.url.split('delete/')[1];
+    console.log(sku);
     try{
-        if(await products.deleteOne({id})){
+        const data = await new Promise((resolve, reject) => {
+            db.query(`DELETE FROM products WHERE sku = ?`,[sku],(err : any, results : any) => {
+                if(err){
+                    reject(err);
+                }
+                else{
+                    resolve(results);
+                }
+            })
+        })
+        if(data){
             return new Response(JSON.stringify({message : "Data Deleted"}), {status : 201})
         }
         else{

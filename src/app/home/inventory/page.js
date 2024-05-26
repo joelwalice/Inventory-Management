@@ -158,7 +158,7 @@ const Page = () => {
                                         </td>
                                         <td className="text-sm md:text-md p-3 flex items-center gap-2">
                                             <Link
-                                                href={`/home/edit/${product._id}`}
+                                                href={`/home/edit/${product.sku}`}
                                                 type="button"
                                                 className="p-1 rounded-lg border-green-700 bg-green-700 text-white text-sm flex items-center gap-2"
                                             >
@@ -167,7 +167,7 @@ const Page = () => {
                                                 </svg>
                                             </Link>
                                             <Link
-                                                href={`/home/inventory/delete/${product._id}`}
+                                                href={`/home/inventory/delete/${product.sku}`}
                                                 type="button"
                                                 className="p-1 bg-red-700 text-white rounded-md border-red-700 text-sm flex items-center gap-2"
                                             >
