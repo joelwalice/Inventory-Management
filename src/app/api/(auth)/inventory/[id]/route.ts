@@ -5,7 +5,7 @@ export const PUT = async (req: Request) => {
     const body = await req.json();
 
     try {
-        const updateProduct = await new Promise((resolve, reject) => {
+        const updateProduct : any = await new Promise((resolve, reject) => {
             const query = `
                 UPDATE products 
                 SET name = ?, category = ?, incoming = ?, stock = ?, image = ?, price = ?
